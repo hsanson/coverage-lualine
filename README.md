@@ -24,6 +24,12 @@ Using Lazy
 The following configuration add the lualine-coverage component with total scope
 to the status line and with file scope to the winbar.
 
+> [!NOTE]
+> You must load the coverage report using `CoverageLoad` after running the
+> tests for the coverage information to be shown in the statusline and winbar.
+> You may also want to show coverage signs by
+> executing `Coverage`.
+
 ```lua
 lualine.setup({
     options = {
@@ -87,3 +93,5 @@ lualine.setup({
     },
 })
 ```
+
+Depending on the `min_coverage` configured in [nvim-coverage](https://github.com/andythigpen/nvim-coverage) plugin the color of the coverage will change to the `bad` highlight if coverage is less than the `min_coverage`, `ok` highlight if larger than `min_coverage` but less than 100%, and `good` highlight if it is 100%.
