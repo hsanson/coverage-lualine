@@ -8,7 +8,6 @@ local default_options = {
 		ok  = "#00FFFF",
 		good  = "#00FF00",
 	},
-	minimum = 80,
   icon = " ",
 	percent_icon = " ",
 	scope = "file", -- Either "file" or "total"
@@ -70,15 +69,17 @@ function M:init(options)
 	self.highlights.good = highlight.create_component_highlight_group(
         { fg = self.options.hl.good },
         'coverage_good', self.options)
+
+	local is_ok, config = pcall(require, "coverage.config")
+
+	if is_ok then
+		self.min_coverage = config.opts.summary.min_coverage
+	else
+		self.min_coverage = 80
+	end
 end
 
 function M:update_status()
-  local current_filetype = vim.bo.filetype
-
-	if current_filetype ~= "go" then
-		return ""
-	end
-
   local coverage = ""
 
 	if self.options.scope == "total" then
@@ -97,7 +98,7 @@ function M:update_status()
 			coverage .. self.options.percent_icon
 	end
 
-	if coverage > self.options.minimum then
+	if coverage > self.min_coverage then
 	  return highlight.component_format_highlight(self.highlights.ok) ..
 			coverage .. self.options.percent_icon
 	end
