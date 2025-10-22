@@ -30,7 +30,7 @@ local function get_total_coverage()
 		return ""
 	end
 
-	return json_data.totals.percent_covered
+	return math.ceil(json_data.totals.percent_covered)
 end
 
 local function get_file_coverage(filename)
@@ -50,7 +50,7 @@ local function get_file_coverage(filename)
 		return ""
 	end
 
-	return json_data.files[filename].summary.percent_covered
+	return math.ceil(json_data.files[filename].summary.percent_covered)
 end
 
 function M:init(options)
